@@ -1,0 +1,10 @@
+
+* echoall *
+
+Usage: echoall <text>
+
+This is an echo whereby you can echo to everyone logged on no matter 
+what room they are in.
+
+See: emote, pemote
+

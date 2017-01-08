@@ -1,0 +1,296 @@
+From davagatw@globegate.utm.edu Tue Dec 30 20:47:49 1997
+Date: Mon, 29 Dec 1997 22:06:52 -0600
+From: "David A. Gatwood" <davagatw@globegate.utm.edu>
+Newsgroups: alt.talkers.programming
+Subject: NUTS NetLINK pseudo-RFC #1
+
+NUTS NetLINK pseudo-RFC #1
+
+This is a pseudo-RFC.  It is not as formal as an actual RFC.  Replies
+should be directed both to the original author and the newsgroup, where
+possible, due to inconsistend USENET delivery (esp. to the author's
+semi-local news server).
+
+In this pseudo-RFC, the author of this document proposes a superset of the
+NUTS Netlink protocol, with full backwards compatibility, but providing
+additional functionality.  Before one can propose changes, additions,
+etc., one must first attempt to interpret the original protocol.  Below is
+a list of the basic NetLINK commands to the best of my knowledge, as
+interpreted from the source code.
+
+
+Commands and basic function:
++ indicates required items
+
+(*) DISCONNECT   -- polite talkers should send this before closing down a
+                    connection to another talker's netlink port.  If no
+                    disconnect is received, an error message may be
+                    displayed.  Handling this command when received is
+                    only necesary if an error message is displayed
+                    when the connection is lost unexpectedly.
+                    Usage: DISCONNECT\n
+(+) TRANS        -- this is used when a used logs in via netlink.
+                    Usage: varies by version (see above)
+(+) REL          -- this releases a user login...
+                    Usage: REL username\n
+(+) ACT          -- this executes a command, may be disabled if you
+                    only want to allow speech and no motion or anything,
+                    though that's rather cruel.
+                    Usage: ACT username action[]\n
+(+) GRANTED      -- sent when permission for a user to login is granted,
+                    Usage: GRANTED username\n
+(+) DENIED       -- A. "DENIED CONNECT #" indicates you aren't
+                       allowed to connect your site to a remote site in the
+                       initial negotiation or the remote host refused for
+                       other reasons.  A list of these numbers is provided
+                       below.
+                    B. "DENIED username #" means a user login was denied.
+
+                    Reasons for "DENIED CONNECT":
+                       1 -- not in valid sites list
+                       2 -- unable to create netlink object (out of memory)
+                       3 -- no room had an available slot for inbound link
+                            ("no free room links.").
+
+                    Reasons for "DENIED username":
+                       1 -- (not reused from above)
+                       2 -- (not reused from above)
+                       3 -- (not reused from above)
+                       4 -- link for incoming/outgoing users only
+                            (opposite of what user is attempting)
+                       5 -- user already logged in (at remote site)
+                       6 -- A. out of memory creating user object -- only
+                               useful if uses dynamically allocated user
+                               structs.
+                            B. ver<3.3.3 may also return this for banned
+                               users and users below minlogin (when sending
+                               to older talkers, both conventions should
+                               be honored, by version number).
+                       7 -- incorrect password (for valid local users)
+                       8 -- A. login level below minlogin -- nuts 3.3.3 and
+                               up only, else use 6.
+                            B. request for action by user not logged in.
+                       9 -- user banned -- nuts 3.3.3 and up only, else use 6.
+
+(+) MSG          -- indicates beginning of text to be send unprocessed.
+                    Usage: MSG username\n(body of message)EMSG\n
+(+) PRM          -- requests that user's originating site display a prompt.
+                    Usage: PRM username\n
+(+) VERIFICATION -- sent by client to tell server _its_ version info, etc.
+                    Usage: VERIFICATION password version\n, where password
+                           is the password for the netlink connection and
+                           version is a dotted triple, like 3.3.3....
+(+) VERIFY       -- response to VERIFICATION.
+                    Usage: VERIFY OKAY *\n, where * is IN, OUT, or ALL.
+(+) REMVD        -- sent by remote host to originating site to indicate
+                    that the user has used go to return to originating
+                    site or has been kicked off the remote host.
+                    Usage: REMVD user\n
+(+) EXISTS?      -- sent to request verification of a user before sending
+                    mail.  Responses are EXISTS_YES and EXISTS_NO
+    EXISTS_NO    -- user does not exist
+    EXISTS_YES   -- user exists
+                    Usage: EXISTS? to from\n, where "to" is verified,
+                           and returned to from.
+                    Returns: EXISTS_* to from\n, in a like fashion
+(+) MAIL         -- indicates start of a mail message for remote delivery
+                    Usage: MAIL to from\n
+(+) ENDMAIL      -- indicates end of a mail message
+                    Usage: ENDMAIL\n
+(+) MAILERROR    -- indicates an error occurred in mail delivery
+                    Usage: MAILERROR to from\n
+(*) KA           -- keepalive message -- may be ignored when received or
+                    used to determine whether a netlink is working or not,
+                    but must be sent every so often, which may depend on
+                    the remote host -- the remote host can't disconnect
+                    in less than 300 seconds, according to the comments in
+                    the sources.  Dunno why.  I'd say doing it in an
+                    alarm-based signal handler every 30 seconds or so
+                    should pretty much keep other talkers happy.  :-)
+                    Usage: KA\n
+(-) RSTAT        -- remote statistics - if not supported, it should at
+                    least send a response along the lines of "MSG username\n
+                    Not supported\nEMSG\n" since it's assumed that any
+                    3.3.3 or newer talker supports this.
+                    Usage: RSTAT username\n
+
+
+NOTES AND CHANGES:
+
+1. In the current implementation, if I read this correctly, a user cannot
+be moved into a netlink.  I'm not sure why.  This should be easily
+changable.
+
+2. In the current implementation, a user can only navigate to a host, not
+through it to another one, simply because the same pointer is used for a
+user's incoming and outgoing netlink pointers.  This can and should be
+changed in the new implementation, especially if it is coded from scratch.
+
+3. Some commands ending in look(u) might require code added to send "ACT
+username look" along the line if that user were not local.  Since this
+should only be move commands, in all likelihood, this is irrelevant.
+
+4. Someone needs to look into the prompt command and find out why the
+source says that line eds and stuff can't be used over the link and fix
+the problem, if possible (and if it still exists).  This is, however,
+trivial, and changes to this would not have a significant effect on this
+RFC, except insofar as they add additional things to negotiate.
+
+5. Given that NUTS 3.x uses version numbers to determine the features
+supported by a remote host's netlink system, care should be taken to
+preserve compatibility with older versions by keeping the same basic
+checks.  However, this superset would denote a newer version.  Since
+there is a possibility that, at some point in the future, the author
+of NUTS might release a NUTS 4, and since other talkers on the net use
+version numbers in different ways, care should also be taken to _not_
+use a version number for determining compatibility with the extended
+feature set proposed in this pseudo-RFC.
+
+The easiest way to get around the version problem without creating
+an unusual version number (i.e. 3.3.36 or 90.3.3) is to use the version
+number "3.3.3+".  This will be interpreted by the standard implementation
+as 3.3.3, while the + would still be part of the same %s in an sscanf
+instruction, making it easily identifiable in this new RFC implementation.
+
+6. The MAILERROR command should be expanded for systems with extended
+feature support, to return a short message telling the nature of the
+error.  Thus, the new usage would be "MAILERROR to from # string\n", where
+# would be an error number that could be converted into a standard
+message by the sending mail progrm, and string could be additional
+details about why this differs from the normal meaning of the standard
+message, if any, otherwise, the string would end after the number.
+Older implementations _should_ ignore the rest of the string anyway,
+but only outputting the extra stuff for the hacked versions wouldn't
+be a bad idea....
+
+7. The current NUTS 3.3.3 implementation appears to leave the possibility
+of referencing a destroyed netlink object by using a for loop.  While
+not necessarily life-threatening, if this possibility indeed exists, this
+should be avoided in in this implementation and corrected in the NUTS 3.3.3
+implementation.
+
+8A. This implementation will include a telnet-like negotiation system, used
+only when receiving a connection from a compatible system.  Upon detection
+of a NUTS version ending in a '+' (i.e. extended feature support), the
+following negotiation is suggested:
+
+After receiving NUTS 3.3.3+ ...\n
+
+send:   NEGOTIATE option1 option2 option3 option4 option5\n
+
+and as many sets as necessary of:
+
+expect: NEGOTIATE counteroption1 counteroption2\n
+send:   NEGOTIATE counteroption1 counteroption2\n
+
+until you receive one of the following:
+
+A. NEGOTIATE OK\n
+B. a set of options you can live with
+
+send: VERIFICATION password version\n
+
+
+The idea is to do something along the lines of the telnet protocol,
+in which one computer says will_ansi and the other system either
+says do_ansi or wont_ansi.  Alternately, the computer may not respond
+to one of the protocol requests, instead asking, say, will_vt100
+and if the other one says wont_vt100, then responds wont_ansi.
+Chances are, the negotiation will be fairly simple.  It should remain
+short enough that the other users on either talker don't notice the
+delay.
+
+8B. Mandatory negotiation capabilities: any unknown capability requests
+should return a wont_*.  Some capabilities should be handled, and are thus
+listed as required capabilities in this RFC.  In the interest of
+readability, the initial WILL/WONT/DO prefix is left off.
+
+TERMINAL=* -- if nothing else, TERMINAL=tty must be accepted.  Other
+              terminal types may be negotiated if your implementation
+              supports something other than tty (i.e. vt100, vt100-ansi)
+              Note that typically, this transaction is as simple as
+              S: WILL_TERMINAL=vt100 R: DO_TERMINAL=vt100.  If nothing
+              else works, tty can always be used as a baseline.  All
+              terminal types should be in lowercase letters (although
+              implementations can certainly check and correct this if
+              they receive uppercase letters, this is left at the
+              discretion of those creating the implementation).
+COLOR      -- whether to support ANSI color.  This is distinct from
+              terminal, in that a terminal can technically support the
+              b/w ansi extensions such as boldface, underline, and
+              inverse without supporting foreground and background
+              color modes.
+GRAPHICS   -- if the user's terminal program supports ANSI graphics mode.
+              If your talker has no support for ANSI graphics mode, it
+              should always respond WONT_GRAPHICS.
+REMPROMPT  -- if your talker supports remote prompt() extensions.  This
+              is subject to whether such extensions are necessary and
+              non-backwardly-compatible.
+CHARMODE   -- if your talker supports a direct character mode transfer of
+              data to the remote talker.  Again, support for this may be
+              limited to WONT_CHARMODE.
+
+Additional required parameters not beginning with WILL/WONT/DO are:
+
+SET var=*  -- assigns a particular variable a given value.  Multiple word
+              values must be enclosed in double quotes ("").  Example:
+              SET delete=255 sends the character code number for delete
+              as used by the local talker.  This is provided for CHARMODE,
+              and the value may be ignored.  SET may be used in both
+              outgoing and incoming negotiation, however, it may not be
+              challenged.  Items requiring challenges should use the
+              WILL/WONT/DO construct.
+
+              Syntax requirements: numbers must be in base 10.  Strings
+
+              must be enclosed in double quotation marks ("") if they
+              contain whitespace.  Shorter strings *may* be enclosed in
+              double quotation marks, at the discretion of the remote
+              host, and the local host must handle this case properly.
+              Numbers enclosed in double quotation marks will be treated
+              as a string.  Strings beginning with a number must be
+              enclosed in double quotation marks.  Any double quotation
+              marks used within a string must be quoted by a backslash (\).
+              A backslash used within a string must also be quoted by a
+              second backslash, to prevent it from being interpreted as
+              a quoting character (i.e. '\\' == '\' and '\"' = '"'.)
+
+Required variable support:
+
+SALT=*     -- This will be sent by both hosts to the other, indicating
+              the required SALT to be used in sending encrypted passwords
+              over the link connection.  A value of "**" means that the
+              salt will be the first two characters of the user's login
+              name, case sensitive.  A value of "*!" means that the
+              salt will be the first two characters of the user's login
+              name, converted to upper case.  A value of "*#" means that
+              the salt will be the first two characters of the user's
+              login name converted to lower case.  All other values will
+              be used as the salt for the crypt() function.
+
+
+9. Implementation: if a given talker has no say or .say command, that must
+be gotten around.  Beyond that, user commands preceded by "ACT username"
+should be treated as commands.  Most other commands are self-explanatory.
+The means for handling unknown remote users without actually creating a
+local user with that name is left as an exercise for the implementing
+person within a given architecture, and is beyond the scope of this RFC.
+That having been said, the easiest solution would be to have a user
+type number, which if equal to NETLINK_USER or some such number, would not
+get saved.  A similar type field exists within NUTS 3.3.3.
+
+10. Finally, I'd like to propose that this superset be called Talker
+NetLink+, from the + used to denote compatibility.
+
+
+This pseudo-RFC was written by David A. Gatwood, a student at the
+University of Tennessee at Martin.  For more information, comments, etc.,
+send electronic mail to dgatwood@globegate.utm.edu.
+
+
+----------------------- END OF pseudo-RFC -----------------------
+
+
+Comments?
+
+

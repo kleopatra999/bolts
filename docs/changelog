@@ -1,0 +1,166 @@
+ChangeLog
+-=-=-=-=-
+
+Look for the variable "talkername" in bolts.h and change this to the name 
+of your talker.
+
+Added a famous quote feature whenever you login.
+
+Increased the buffer size from 15 to 25 lines so that people can write
+long profiles and messages if they feel so inclined.
+
+Changed the command prompt from COM> to something more suitable:
+Fred@Money Mansion:/home/entrance_lobby>
+
+Prompt is in the format of:
+You@Talker name:/home_or_name_of_remote_talker/room_you_are_in>  
+
+Added a space to the emote code so that you won't be emoting like this:
+
+Fred@Money Mansion:/home/entrance_lobby> ;flies around.
+Fredflies around.
+
+Added the ability to .tell and .pemote to anyone who is in a netlink.
+
+Modified the .invis ability so that only users your level and higher know that you are 
+online. People can .tell, .pemote, .beep, .wake, .cprog, .join (etc.) you if they know you 
+are online.
+
+Also, you are able to log on and off invis.  If you are invis, only Admins
+and higher can see who you are via the "SIGN ON:" message.
+
+Changed the system messages of .clone and .dest to something more suitable.
+Somehow I don't think whispering sharp spells fits into a talker's theme.
+
+Changed the .mode prompt from COM> to Money Mansion> and if you are invis,
+it will say Money Mansion (Invis)>
+
+Users with swear words in their name cannot login.
+
+Added a prelogin feature where Wizards and above can see who is logging in.
+
+Added some code at the end of the logout function which tells the user
+what site they are logging in from and for how long they were logged in.
+
+Added a few lines in the help_commands function to tell you the number
+of commands.
+
+Moved the .semote command to .emoteall and gave it to JrWizzes instead.
+Moved the .wizshout command to .wiz
+
+Changed the shortcut keys:
+
+> = .tell
+< = .pemote
+; = .emote
+- = .echo
+
+Erased the NEW level.  If you want it, copy it from Neil's NUTS 3.3.3 code.
+
+Removed helpfiles/mainhelp. Now when you issue the .help command, it will 
+tell you the commands available. Less muss, less fuss...
+
+Changed the names of the levels from USER,WIZ,ARCH,GOD,* to
+Dunce,User,JrWiz,Wizard,Honor,Admin,God,Creator.  Creator is an extra
+level above God and is used for debugging purposes and to demote Gods.  Honor 
+is an Admin/God from another talker.  Dunce is for consequencing users if they
+break the rules, Dunces can only do .help, .look, .who and .quit.  JrWiz is
+a Wizard in training.
+
+Also you can't .delete,.promote,.demote,.ban,.unban,.reboot or .shutdown
+over a netlink because of certain security risks involved.  That was a bug
+by Neil that I corrected.
+
+07/2002 - Changed the output of 'who' so that people of a level lower than you cannot see 
+what room you are in and bug you.
+
+Added the following commands:
+
+User level:
+
+.act - a social command, see .help act for details.
+
+.emergency - an emergency channel to wizards in case the user gets into
+	     problems.  The channel is one way only.
+
+.wizzes - gives you a list of Wizards and higher.
+For every Wizard you promote, you need to add them to datafiles/wizzes
+
+.staff - tells you a list of the VISIBLE wizards on.
+
+.rules - gives the user a list of rules.
+Rules are in the file datafiles/rules
+
+.join - Will take you to the specified person, wherever they are.
+        Like if the user's in the corridor and you're elsewhere, they can
+        .join Fred for example to get to you.  You can't join someone if
+	they're in the wizroom.
+
+.lexamine, .ltell, .lwho will perform .examine, .tell and .who on the home
+site if you're netlinked.
+
+.chat - Is a handy dandy chat channel I made loosely based on .shout.
+        Usage: .chat <your message>
+	.chat on <to turn chat on>
+	.chat off <to turn it off>
+
+.uptime - Will show you how long the talker has been up and running.
+
+.time - Will show you the system time.
+
+.roulette - Russian roulette
+
+05/17/01 - Changed the default description of a new user from "a Newcomer" 
+to "hasn't used .desc yet"
+
+Wizard level:
+
+Made Wizards able to .clone, .dest, etc.
+Changed wizshouts to look like this: 
+(Wiz) Fred: wibble
+
+Added the on and off parameters to .wiz so you can turn them on/off
+with .wiz on & .wiz off respectively.
+
+.arrest - will arrest someone and toss them in jail if they're bad &
+	  keep them in jail even if they .quit...when they are arrested,
+	  only .quit and .rules work.
+.unarrest - will release them from jail
+.beep - will beep someone
+.echoall - will echo something to all rooms
+.wizemote - will emote something to all wiz
+.lpeople - runs .people on the home site if you're netlinked
+.lbcast - .bcasts something on the ohme site if you're netlinked.
+.bring - brings a user to you.
+.force - force anyone below your level to do anything.
+
+Honor level:
+
+.honor - it's an Honor channel
+	Usage:  .honor <message>
+		.honor on <turns it on>
+		.honor off <turns it off>
+.honoremote - You can emote on the channel using this.
+
+Admin level:
+
+.admin - it's an Admin channel
+        Usage:  .admin <message>         
+                .admin on <turns it on>  
+                .admin off <turns it off>
+.adminemote - Allows you to emote on the channel.
+
+God level:
+
+.god - it's a God channel
+        Usage:  .god <message>
+                .god on <turns it on>
+                .god off <turns it off>
+.godemote - You can emote on the channel using this.
+
+That's about it.
+
+Please email me with any suggestions, complaints, gripes, etc.
+
+Nathan D Richards <nathanr@nathanr.com>
+Aka Sunspot on Paradise (paradise.nathanr.com 7000), the home of Bolts.

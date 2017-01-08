@@ -1,0 +1,11 @@
+
+* sayto *
+
+Usage: sayto <user> <message>
+
+This is used to direct speech in the same room to someone other than yourself.
+The text will be seen by everybody in the room, though it will be displayed
+in the form of:
+
+Fred says (to User): Wibble
+

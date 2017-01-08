@@ -1,0 +1,7 @@
+
+* bjack *
+
+Usage: bjack <deal | hit| stand | surrender | status>
+
+A fun game of blackjack.
+

@@ -2,6 +2,7 @@
 * echo *
 
 Usage: echo <text>
+Alias: -
 
 This is more a fun command than anything really usefull. It simply echoes
 whatever you write as the text into the room without other users see who

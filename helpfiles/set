@@ -1,0 +1,28 @@
+
+* set *
+
+Usage: set <age | autofwd | email | gender | hidemail | icq | url> [data]
+
+Example: .set url http://paradise.nathanr.com
+         .set gender M
+         .set icq 12345678
+         .set age 20
+         .set email blarg@foo.com
+	 .set hidemail off
+         .set autofwd on
+
+Please note:
+Your age cannot be greater than 99.
+Your URL can be a maximum of 30 characters
+Your ICQ number can be a maximum of 10 characters.
+Gender: M is male, F is female and N is neuter.
+Hidemail: hides your e-mail address from other users (of User level). 
+Autofwd: smail auto-forwarding to your e-mail address.
+
+When you set your e-mail address, it is automatically checked to make sure it's valid.
+
+For example:
+	root@... is not permitted
+	anything@localhost is not permitted
+	anything which does not resemble an e-mail address is not permitted.
+

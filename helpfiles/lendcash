@@ -1,0 +1,10 @@
+
+* lendcash *
+
+Usage: .lendcash <user> <amount>
+
+Subtracts the specified amount from your bank account and deposits it into a 
+user's bank account.
+
+See: balance
+

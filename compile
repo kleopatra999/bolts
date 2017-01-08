@@ -1,0 +1,86 @@
+#!/bin/sh
+#
+# Setup some global variables...
+#
+exec="bolts"
+source="bolts.c"
+cc="gcc"
+#
+# Note: Note.  Some systems, i.e. Redhat and some BSD systems require you
+#       include the Crypt Library on the compiler command line using the
+#       -lcrypt  command.   You can also define other compiler options like
+#       -O3 for optimization, and/or  -m486 etc.  See the manual pages for
+#       your compiler!  Use -DGLIBC207 if you have a GLIBC 2.0.7 or higher!
+#
+ccops="-lcrypt -O3"
+#ccops="-O3 -m486"
+#ccops="-DGLIBC207"
+#ccops="-lcrypt -DGLIBC207"
+#ccops=""
+#
+# Get Host Compilation Information To Be Imported Into Moenuts.
+# For example, What machine type etc.
+#
+fullinfo=`uname -a`
+if [ "$fullinfo" = "" ]; then fullinfo="Unknown"; fi
+host=$HOSTNAME
+if [ "$host" = "" ]; then host=`hostname`; fi
+if [ "$host" = "" ]; then host=`uname -n`; fi
+if [ "$host" = "" ]; then host=$HOST; fi
+if [ "$host" = "" ]; then host="unknown"; fi
+user=$USER
+if [ "$user" = "" ]; then user=$LOGNAME; fi
+if [ "$user" = "" ]; then user=`logname`; fi
+if [ "$user" = "" ]; then user="unknown"; fi
+system=`uname -s`
+if [ "$machine" = "" ]; then machine=$MACHINE; fi
+if [ "$machine" = "" ]; then machine="unknown"; fi
+release=`uname -r`
+if [ "$release" = "" ]; then release="unknown"; fi
+machine=`uname -m`
+if [ "$machine" = "" ]; then machine=$MACHINE; fi
+if [ "$machine" = "" ]; then machine=$HOSTTYPE; fi
+if [ "$machine" = "" ]; then machine=$hosttype; fi
+if [ "$machine" = "" ]; then machine="unknown"; fi
+timezone=$TZ
+if [ "$timezone" = "" ]; then timezone="EST5EDT"; fi
+#
+# Remove Old hostinfo.h if it exists because we're gonna make a fresh one!
+#
+rm -f ./hostinfo.h
+#
+echo "/* Bolts System Compilation Information */" > hostinfo.h
+echo "" >> hostinfo.h
+echo "#define COMPILE_BY       \"$user\"" >> hostinfo.h
+echo "#define COMPILE_HOST     \"$host\"" >> hostinfo.h
+echo "#define COMPILE_OSNAME   \"$system\"" >> hostinfo.h
+echo "#define COMPILE_HOSTTYPE \"$machine\"" >> hostinfo.h
+echo "#define COMPILE_RELEASE  \"$release\"" >> hostinfo.h
+echo "#define COMPILE_DATE     \"`date +%D`\"" >> hostinfo.h
+echo "#define COMPILE_TIME     \"`date +%T`\"" >> hostinfo.h
+echo "#define COMPILE_FULL     \"$fullinfo\"" >> hostinfo.h
+echo "" >> hostinfo.h
+clear
+echo "Current Host Information..."
+echo ""
+echo "Account Name : $user  ($user@$host)"
+echo "Host Info    : $machine $system $release ($host)"
+echo "Date & Time  : `date +%D` at `date +%T`" 
+echo "Timezone     : $timezone"
+echo ""
+#
+# Remove Old Executable If It Exists Incase Compile Fails, We'll Have A Recent
+# Backup Of The Executable.  Just Named <exec>.old
+#
+echo "Making Backup Copy Of Old Executable, Saving It As $exec.old..."
+rm -f ./$exec.old
+mv ./$exec ./$exec.old
+echo "Making Backup Copy Of Old System Log, Saving It As syslog.bak..."
+mv ./syslog ./syslog.bak
+echo "Building $talkername:  Compiling $source -=> $exec..."
+echo ""
+echo $cc $source $ccops -o $exec $2 $3 $4 $5
+$cc $source $ccops -o $exec $2 $3 $4 $5 || echo "Removing Extra Debugging Information And Running $exec..." ; echo "" ; strip ./$exec ; echo Executing $exec ; ./$exec
+echo ""
+echo "Please read the README file if you haven't already before you go any further!"
+echo ""

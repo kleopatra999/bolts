@@ -1,6 +1,14 @@
 NUKyNCCLvgLH.
-848430018 18578 3 831563811 4 1 0 1 0 0
-spirit
-is Mr Big
-bounces in
-rolls and tumbles out
+990142500 519654 9 852492882 6 0 0 0 0 1
+sasami.jurai.net
+is the boss!
+enters
+goes
+0
+-Unset-
+-Unset-
+0 1
+-Unset-
+0 0
+0 0 0
+1000

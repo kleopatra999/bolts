@@ -1,0 +1,10 @@
+* rename *
+
+Usage:  ~FG.rename <user> <new_name>~RS
+
+This command will rename a user and all his/her corresponding
+files.  This makes it easy to change a user's name who wants
+a different one without going into the shell and manually
+changing all the files.  The user must be logged in when this
+command is used.
+

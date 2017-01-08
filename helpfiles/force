@@ -1,0 +1,9 @@
+
+* force *
+
+Usage: force <user> <action>
+
+Forces a user to do something.
+
+Example: .force test act grin
+

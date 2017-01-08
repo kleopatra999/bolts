@@ -1,0 +1,8 @@
+
+* nslookup *
+
+Usage: nslookup <host> [<nameserver>]
+
+This utility is to lookup an IP address given a hostname or a hostname if
+given an IP address.
+

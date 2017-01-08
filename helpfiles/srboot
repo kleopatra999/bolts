@@ -1,0 +1,10 @@
+
+* srboot *
+
+Usage: srboot 
+
+This will seamlessly reboot the talker - meaning that the talker will not kick users
+offline, as it does with the regular .reboot command.
+
+See: reboot, shutdown
+

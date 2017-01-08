@@ -1,0 +1,20 @@
+
+* modify *
+
+Syntax: .modify <user> desc/in/out/site/vis/time/ident/level <text>
+
+	Use this command (very carefully :)) to modify:
+
+	desc <new_desc>		description of an user
+	in/out <phrase>		in/out phrases of an user
+	site <new_site>		site of an user
+	vis on/off		state of visibility 
+				(only for connected users) 
+	time <d> <h>		total login time (days & hours)
+	ident <new_account>	real name of a user (must be unconnected)
+	level <level>		user level (silently)
+
+	The 'desc', 'in',... parameters accept abbreviations.
+
+See also: .desc, .inphr, .outphr, .site, .vis, .promote, .demote
+

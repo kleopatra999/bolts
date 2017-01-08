@@ -1,0 +1,5 @@
+
+* lwho *
+
+This command only works if you're netlinked.  It will give you a who list
+of the talker you've netlinked from.

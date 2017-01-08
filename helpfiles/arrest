@@ -1,0 +1,6 @@
+
+* arrest *
+
+Usage: .arrest <user>
+
+Arrests a naughty user and toses them in jail.

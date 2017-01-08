@@ -1,0 +1,12 @@
+
+* honor *
+
+Usage: honor <message>/on/off
+
+This command allows Honors to send a message to all Honors currently
+logged in.
+
+.honor on will turn the channel on and .honor off will turn it off.
+
+See: wizshout
+

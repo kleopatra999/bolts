@@ -1,0 +1,7 @@
+
+* guess *
+
+Usage: guess <letter>
+
+Allows you to guess a letter in a game of hangman.
+

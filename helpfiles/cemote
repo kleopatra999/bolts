@@ -1,0 +1,9 @@
+
+* cemote *
+
+Usage: cemote <room> <action>
+
+Will make one of your clones in the given room emote. 
+
+See: clone, destroy, allclones, myclones, chear, switch, csay
+

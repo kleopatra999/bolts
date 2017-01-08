@@ -2,8 +2,9 @@
 * shout *
 
 Usage: shout <message>
+Alias: #
 
-This allows you to "shout" to the whole talker. Shortcut is '!'.
+This allows you to "shout" to the whole talker. Shortcut is '#'.
 
 See: say, tell
 

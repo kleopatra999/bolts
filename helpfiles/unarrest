@@ -1,0 +1,6 @@
+
+* unarrest *
+
+Usage: .unarrest <user>
+
+Un-arrests a user & releases them from jail.

@@ -1,0 +1,10 @@
+About delold.c
+-=-=-=-=-=-=-=
+
+delold.c is a program that will erase idle users for you.
+
+Change the number in the int days function on line 8 to the amount of days
+you'd like.
+
+Compile delold with gcc delold.c -o delold or whatever works for your OS
+and move the executable to userfiles/ and run it from there.

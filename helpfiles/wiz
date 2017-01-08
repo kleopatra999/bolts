@@ -1,0 +1,12 @@
+
+* wiz *
+
+Usage: wiz <message>/on/off
+
+This command allows wizards to shout a message to all wizards currently
+logged in.
+
+.wiz on will turn wizshouts on and .wiz off will turn them off.
+
+See: chat
+

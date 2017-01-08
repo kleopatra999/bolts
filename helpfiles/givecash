@@ -1,0 +1,9 @@
+
+* givecash *
+
+Usage: .givecash <user> <amount>
+
+Deposits the amount you specify into a user's bank account.
+
+See: lendcash, balance
+

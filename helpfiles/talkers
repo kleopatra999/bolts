@@ -1,0 +1,57 @@
+
+-------------------------------------------------------------------
+Supplemental Help Topic:  TALKERS (written for TalkerOS)
+-------------------------------------------------------------------
+
+Talkers, in general, are programs that allow users on the Internet
+to interact and talk with each other.  Many people call places such
+as this "chats," but that is a general term.  Most talkers run on
+a port--a specific connection at a server.  You connect to these
+ports through telnet.  Telnet is a part of the Internet and usually
+requires some type of client to connect.  Clients (some complicated
+and advanced while others are very simple) can be downloaded FREE
+from http://www.shareware.com
+
+When someone connects to a talker, they enter their username and
+a password of their choice, which then logs them into the talker
+program.  Each user has their own account--usually free, but some
+talkers charge money for an account.  The accounts keep individual
+statistics on each user.  You usually are required to perform an
+.accreq (account request) where you provide information such as
+your email address before an account is issued.  Sometimes you will
+be asked to perform some other actions as well as .accreq.
+
+
+
+
+
+At this time, please take notice that this file is written for
+users of NUTS-Based talkers.  NUTS talkers operate *mostly* the
+same way and the original code was created by Neil Robertson.
+There are many other types of talkers.
+
+Talkers usually consist of many rooms.  You can move around in
+NUTS by using the ~FG.go~RS command followed by the room's name.
+Rooms allow users to separate themselves to have a private
+conversation, for example.  Rooms usually have seperate themes or
+settings, to provide users with a choice of "virtual surroundings."
+
+Talkers are also level-based.  That means each user at a talker that
+has an account also has a level.  Levels control what commands you
+have and what special things you can do.  Some levels give users
+limited control over other users.  These levels are called superuser
+levels, administration levels, or wiz (short for wizard) levels.
+You will start out as a very low level when you first join a talker,
+and will move up over time, depending on the requirements.
+
+To perform actions on a talker, you will use commands.  Commands
+allow you to look up information (.status and .examine), perform
+an action (.think and .emote), and set statistics on yourself
+(.desc and .profile).  You can get a list of commands by typing
+~FG.help commands~RS on NUTS-based talkers, or ~FG.commands~RS on
+TalkerOS-based talkers.
+
+If you have any other questions about the basics of a talker, feel
+free to ask an admin (aka wizard) that's currently logged in.  If
+one isn't available, try asking anyone else.  Most people on talkers
+are very friendly, and even more-so when you get to know them.

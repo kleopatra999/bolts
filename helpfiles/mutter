@@ -1,0 +1,7 @@
+
+* mutter *
+
+Usage : mutter <user> <text>
+
+This will send the text to everyone in the room except the given user.
+

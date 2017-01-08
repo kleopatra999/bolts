@@ -1,0 +1,8 @@
+
+* sitechange *
+
+Usage: sitechange [<text>]
+
+This allows you to temporarily change the variable of user->site (the 
+site you've logged in from) to anything you like.
+

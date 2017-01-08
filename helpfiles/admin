@@ -1,0 +1,12 @@
+
+* admin *
+
+Usage: admin <message>/on/off
+
+This command allows Admins to send a message to all Admins currently
+logged in.
+
+.admin on will turn the channel on and .admin off will turn it off.
+
+See: wizshout
+

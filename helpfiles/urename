@@ -1,0 +1,104 @@
+	case URENAME: user_rename_files(user,inpstr); break;
+
+/*  This will rename a user to a new name.  Isn't that nice?  The user
+    must be logged in at the time, because if you changed it while they
+    were not logged in, how would they know that you changed it?!  This
+    simplifies having to go into the shell to rename all the files, and
+    it also lets you give your high-ranking wizards the ability to do
+    this without them having to bug you, or having to give them shell
+    access. */
+
+user_rename_files(user,str)
+UR_OBJECT user;
+char *str;
+{
+UR_OBJECT u,u2;
+char oldfile[81],newfile[81];
+int i,len;
+
+if (word_count<3) { write_user(user,"Usage:  .urename <user> <newName>\n"); return; }
+/* make sure we aren't renaming someone to a swear word... of course
+   if the swear ban is off, this won't matter. */
+if (contains_swearing(str)) {
+        write_user(user,"Swear words can not be used in the user name.\n");
+        return;
+        }
+/* check to see if the user is logged in or not (see above) */
+if (!(u=get_user(word[1]))) {
+        write_user(user,notloggedon);
+        return;
+        }
+/* user is logged in */
+else {
+        /* make sure the user isn't temp-promoted, and that he/she isn't
+           a lower rank than the person he/she is changing. */
+        if (u->level >= user->level) {
+                write_user(user,"File access denied.\n");
+                sprintf(text,"[ %s attempted to RENAME user: %s ]\n",user->name,u->name);
+		write_level(ARCH,1,text,NULL);
+                return;
+                }                
+        /* make sure the user to be renamed is renameable  :)  */
+        if (u->type!=USER_TYPE) { write_user(user,"ERROR:  User is not the correct type and cannot be renamed.\n"); return; }
+        /* make new user struct */
+        if ((u2=create_user())==NULL) {
+                write_user(user,"ERROR:  Could not create new user object in user_rename_files()!\n");
+                write_syslog("ERROR:  Couldn't create new user object in user_rename_files().\n",0,SYSLOG);
+                return;
+                }
+        /* check validity of new name and do CAPS stuff */
+        for (i=0;i<strlen(word[2]);++i) {
+                if (!isalpha(word[2][i])) {
+                        write_user(user,"\n-=- Only letters are allowed in a username. -=-\n\n");
+                        destruct_user(u2); destructed=0;
+                        return;
+                        }
+                if (!i) word[2][0] = toupper(word[2][0]);
+                else if (!allow_caps_in_name) word[2][i] = tolower(word[2][i]);
+                }
+        /* check to see if user exists with new name */
+        strcpy(u2->name,word[2]);
+        if (load_user_details(u2)) {
+                write_user(user,"ERROR:  Cannot rename, user exists with new name.\n");
+                destruct_user(u2); destructed=0;
+                return;
+                }
+        /* Do file stuff */
+        sprintf(oldfile,"%s/%s.D",USERFILES,u->name);
+        sprintf(newfile,"%s/%s.D",USERFILES,u2->name);
+        rename(oldfile,newfile);
+        unlink(oldfile);
+        sprintf(oldfile,"%s/%s.P",USERFILES,u->name);
+        sprintf(newfile,"%s/%s.P",USERFILES,u2->name);
+        rename(oldfile,newfile);
+        unlink(oldfile);
+        sprintf(oldfile,"%s/%s.M",USERFILES,u->name);
+        sprintf(newfile,"%s/%s.M",USERFILES,u2->name);
+        rename(oldfile,newfile);
+        unlink(oldfile);
+        save_user_details(u2,1);
+        /* End file stuff */
+
+        /* Do announcements */
+        sprintf(text,"[ ~OLSYSTEM:~RS  %s(%s) has been renamed to: %s! ]\n",u->name,levels[u->level],u2->name);
+        write_room_except(NULL,text,u);
+        sprintf(text,"[ %s(%s) RENAMED user '%s' to '%s' ]\n",user->name,levels[user->level],u->name,u2->name);
+	write_level(ARCH,1,text,NULL);
+        sprintf(text,"%s RENAMED user '%s' to '%s'\n",user->name,u->name,u2->name);
+        write_syslog(text,0);
+        sprintf(text,"\n~FR~OLATTENTION:  You have been renamed to: %s\n            This is now your NEW username.  The password remains unchanged.\n\n",u2->name);
+        write_user(u,text);
+
+        /* Change the actual user name */
+        strcpy(u->name,u2->name);
+
+        /* clean up */
+        destruct_user(u2);  destructed=0;
+
+        return;
+        }
+
+/* All that just to rename a user... I would have to rename 60 people in
+the shell to equal that much typing.  Oh well, i guess its convenient for
+you. */
+}

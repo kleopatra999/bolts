@@ -1,0 +1,7 @@
+
+* hangman *
+
+Usage: hangman [play/restart/end/status]
+
+Plays a game of Hangman.
+

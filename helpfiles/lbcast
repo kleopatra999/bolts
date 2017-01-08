@@ -1,0 +1,5 @@
+
+* lbcast *
+
+This command only works if you're netlinked.  It will send a broadcast
+message to the talker you've netlinked from.

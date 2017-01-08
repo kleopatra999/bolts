@@ -1,0 +1,8 @@
+
+* traceroute *
+
+Usage: traceroute <host>
+
+This utility is to trace the route from the talker's machine to any host 
+(or IP address) you specify.
+

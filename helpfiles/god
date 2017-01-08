@@ -1,0 +1,12 @@
+
+* admin *
+
+Usage: god <message>/on/off
+
+This command allows Gods to send a message to all Gods currently
+logged in.
+
+.god on will turn the channel on and .admin off will turn it off.
+
+See: wiz
+

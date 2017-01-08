@@ -1,0 +1,11 @@
+
+* tictac *
+
+Usage   :  tictac [<user>] [<#>] [reset][show][status][say]]
+Examples:  tictac <user>   =  Challenge A User To Tic Tac Toe
+           tictac <#>      =  Place an 'X' in spot '#'
+           tictac reset    =  Reset Tic Tac Toe
+           tictac show     =  Redisplay Board
+           tictac status   =  Your Tic Tac Toe Status
+           tictac say      =  Speak To Your Opponent.
+

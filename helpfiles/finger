@@ -1,0 +1,7 @@
+
+* finger *
+
+Usage: finger <user or user@host>
+
+Gives you the finger information for the Internet user specified.
+
